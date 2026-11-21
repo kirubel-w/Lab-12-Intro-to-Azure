@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Would you rather</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Would You Rather...</h1>
+
+
+        <h2 id="question"> {{ wyr.question }}</h2>
+
+        <fieldset id="wyr-choices">
+            <input id="answer1-radio" type="radio" name="answer" v-bind:value="wyr.answer1" v-model="userChoice">
+            <label id="answer1-label" for="answer1-radio">{{ wyr.answer1 }}</label>
+
+            <input id="answer2-radio" type="radio" name="answer" v-bind:value="wyr.answer2" v-model="userChoice">
+            <label id="answer2-label" for="answer2-radio"> {{ wyr.answer2 }}</label>
+
+        </fieldset>
+
+        </fieldset>
+
+        <p v-if="userChoice" id="response-confirmation">Thanks! you chose <strong>{{ userChoice }}</strong>s</p>
+
+        <p>This is a Vue and Express app running at Azure</p>
+    </div>
+    <script>
+
+
+        const randomWYRQuestionURL = 'api/wyr'
+
+        // fetch(randomWYRQuestionURL)
+        //     .then(response => response.json())
+        //     .then(wyrData => {
+
+        //     })
+        //     .catch(err => {
+        //         console.error(err)
+        //         alert('Sorry, no Would You Rather questions today')
+        //     })
+
+
+        const { createApp, onMounted, ref } = Vue
+
+        createApp({
+            setup() {
+
+                const wyr = ref({})
+                const userChoice = ref('')
+
+                onMounted(() => {
+
+                    fetch(randomWYRQuestionURL)
+                        .then(response => response.json())
+                        .then(wyrData => {
+                            console.log(wyrData)
+                            wyr.value = wyrData
+                        })
+                        .catch(err => {
+                            console.error(err)
+                            alert('Sorry, no Would You Rather questions today')
+                        })
+
+                })  // end of onMounted
+
+                return {
+                    wyr,
+                    userChoice
+                }
+            }
+        }).mount('#app')
+
+
+    </script>
+
+</body>
+
+</html>
