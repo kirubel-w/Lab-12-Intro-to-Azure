@@ -10,8 +10,10 @@
 <body>
     <h1>Would You Rather...</h1>
 
+    <!-- The question from the API will appear here. -->
     <h2 id="question"></h2>
 
+    <!-- Both radio buttons share the same name so only one can be selected. -->
     <fieldset id="wyr-choices">
         <input id="answer1-radio" type="radio" name="answer">
         <label id="answer1-label" for="answer1-radio"></label>
@@ -23,10 +25,12 @@
 
     </fieldset>
 
+    <!-- Show a confirmation after the user picks an answer. -->
     <p id="response-confirmation"></p>
 
     <script>
 
+        // Find the elements that will display the question and answers.
         const questionText = document.querySelector('#question')
         const answer1Label = document.querySelector('#answer1-label')
         const answer2Label = document.querySelector('#answer2-label')
@@ -44,6 +48,7 @@
 
         const randomWYRQuestionURL = 'api/wyr'
 
+        // Request a random question and read the response as JSON.
         fetch(randomWYRQuestionURL)
             .then(response => response.json())
             .then(wyrData => {
@@ -53,14 +58,17 @@
                 answer1Label.innerHTML = wyrData.answer1
                 answer2Label.innerHTML = wyrData.answer2
 
+                // Store each answer on its radio button for the confirmation message.
                 answer1Radio.value = wyrData.answer1
                 answer2Radio.value = wyrData.answer2
             })
             .catch(err => {
+                // Log the error and tell the user the question could not be loaded.
                 console.error(err)
                 alert('Sorry, no Would You Rather questions today')
             })
 
+        // Listen for either radio button to change and show the selected answer.
         radioButtonGroup.addEventListener('change', (event) => {
             if (event.target.name === 'answer') {
                 responseConfirmation.innerHTML = `Thanks! you chose <strong>${event.target.value}</strong>`
