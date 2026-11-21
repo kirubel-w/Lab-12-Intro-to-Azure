@@ -5,16 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Would you rather</title>
+    <!-- Load Vue 3 so the page can use Vue templates and directives. -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 
 <body>
+    <!-- Vue controls the content inside this div. -->
     <div id="app">
         <h1>Would You Rather...</h1>
 
 
+        <!-- Display the question returned by the API. -->
         <h2 id="question"> {{ wyr.question }}</h2>
 
+        <!-- Both radio buttons use v-model to store the selected answer in userChoice. -->
         <fieldset id="wyr-choices">
             <input id="answer1-radio" type="radio" name="answer" v-bind:value="wyr.answer1" v-model="userChoice">
             <label id="answer1-label" for="answer1-radio">{{ wyr.answer1 }}</label>
@@ -26,6 +30,7 @@
 
         </fieldset>
 
+        <!-- Show the confirmation only after the user selects an answer. -->
         <p v-if="userChoice" id="response-confirmation">Thanks! you chose <strong>{{ userChoice }}</strong>s</p>
 
         <p>This is a Vue and Express app running at Azure</p>
@@ -33,6 +38,7 @@
     <script>
 
 
+        // Use a relative URL to request a question from the Express API.
         const randomWYRQuestionURL = 'api/wyr'
 
         // fetch(randomWYRQuestionURL)
@@ -51,15 +57,18 @@
         createApp({
             setup() {
 
+                // Store the question data and selected answer so Vue can update the page.
                 const wyr = ref({})
                 const userChoice = ref('')
 
+                // Fetch a random question after Vue mounts the app.
                 onMounted(() => {
 
                     fetch(randomWYRQuestionURL)
                         .then(response => response.json())
                         .then(wyrData => {
                             console.log(wyrData)
+                            // Updating the ref displays the new question and both answers.
                             wyr.value = wyrData
                         })
                         .catch(err => {
@@ -69,6 +78,7 @@
 
                 })  // end of onMounted
 
+                // Make both variables available to the HTML template.
                 return {
                     wyr,
                     userChoice
