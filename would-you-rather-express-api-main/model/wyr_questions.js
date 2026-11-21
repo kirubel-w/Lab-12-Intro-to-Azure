@@ -1,5 +1,5 @@
-
 // Array of Would You Rather questions and their answer choices
+// Each object stores the question text and the two choices shown on the page.
 const questions = [
     {
         'question': 'Live in a house shaped like a triangle or a house shaped like a circle?',
@@ -31,6 +31,7 @@ const questions = [
 // Function to select and return a random question
 function randomWyrQuestion() {
     // Generate a random index within the questions array
+    // Math.floor rounds down to a whole number from 0 to questions.length - 1.
     const randomIndex = Math.floor(Math.random() * questions.length)
 
     // Get the question at the randomly selected index
@@ -41,4 +42,5 @@ function randomWyrQuestion() {
 }
 
 // Export the function so it can be used in other files
+// The Express API route can call this function when it receives a request.
 module.exports = randomWyrQuestion
